@@ -13,11 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from field_workers import workers
 from django.conf.urls import include
-from django.contrib import admin
+from rest_framework_nested import routers
 from django.urls import path
 
+router = routers.SimpleRouter(trailing_slash=False)
+router.register(r'field_workers', workers.WorkersView, r'workers')
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include(('field_workers.urls', 'workers'), namespace='workers')),
+    path('v1/', include(router.urls))
 ]
